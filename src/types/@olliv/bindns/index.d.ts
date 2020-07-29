@@ -5,7 +5,7 @@ declare module '@olliv/bindns' {
   export class MessageHeader {
     public id: number
     public qr: number
-    public opcode: number
+    public opcode: ns_opcode
     public aa: number
     public tc: number
     public rd: number
@@ -13,7 +13,7 @@ declare module '@olliv/bindns' {
     public z: number
     public ad: number
     public cd: number
-    public rcode: number
+    public rcode: ns_rcode
     public qdcount: number
     public ancount: number
     public nscount: number
@@ -32,7 +32,7 @@ declare module '@olliv/bindns' {
     public type: ns_type
     public class: ns_class
     public ttl: number
-    public rdata: any[]
+    public rdata: string[]
     public constructor(name: string, type: number, klass: number, ttl: number, rdata?: Array<any>)
   }
 
@@ -56,6 +56,7 @@ declare module '@olliv/bindns' {
     }
     public socket: net.Socket
   }
+
   export class ServerResponse extends Message {
     public send(): void
   }
@@ -207,6 +208,7 @@ declare module '@olliv/bindns' {
     dsa = 3,
     private = 4
   }
+
   export enum ns_cert_types {
     pkix = 1,
     spki = 2,

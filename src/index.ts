@@ -1,4 +1,4 @@
-import { ns_class, ns_rcode, ns_sect, ns_type, Server } from '@olliv/bindns'
+import { ns_class, ns_rcode, ns_sect, ns_type } from '@olliv/bindns'
 
 import { DNSServer } from './dns-server'
 
