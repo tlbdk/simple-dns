@@ -22,15 +22,15 @@ declare module '@olliv/bindns' {
 
   export class MessageQuestion {
     public name: string
-    public type: number
-    public class: number
+    public type: ns_type
+    public class: ns_class
     public constructor(name: string, type: number, klass: number)
   }
 
   export class MessageRR {
     public name: string
-    public type: number
-    public class: number
+    public type: ns_type
+    public class: ns_class
     public ttl: number
     public rdata: any[]
     public constructor(name: string, type: number, klass: number, ttl: number, rdata?: Array<any>)
@@ -39,8 +39,8 @@ declare module '@olliv/bindns' {
   export class Message {
     public header: MessageHeader
     public question: MessageQuestion[]
-    public answer: any[]
-    public authoritative: any[]
+    public answer: MessageRR[]
+    public authoritative: MessageRR[]
     public additional: MessageRR[]
 
     public addRR(sect: number, name: string, type: number, klass: number, ttl: number, ...info: Array<string>): void
@@ -67,130 +67,151 @@ declare module '@olliv/bindns' {
     public close(): void
   }
 
-  export abstract class ns_sect {
-    public static qd: number
-    public static zn: number
-    public static an: number
-    public static pr: number
-    public static ns: number
-    public static ud: number
-    public static ar: number
-    public static max: number
+  export enum ns_sect {
+    qd = 0,
+    zn = 0,
+    an = 1,
+    pr = 1,
+    ns = 2,
+    ud = 2,
+    ar = 3,
+    max = 4
   }
 
-  export abstract class ns_flag {
-    public static qr: number
-    public static opcode: number
-    public static aa: number
-    public static tc: number
-    public static rd: number
-    public static ra: number
-    public static z: number
-    public static ad: number
-    public static cd: number
-    public static rcode: number
-    public static max: number
+  export enum ns_flag {
+    qr = 0,
+    opcode = 1,
+    aa = 2,
+    tc = 3,
+    rd = 4,
+    ra = 5,
+    z = 6,
+    ad = 7,
+    cd = 8,
+    rcode = 9,
+    max = 10
   }
 
-  export abstract class ns_opcode {
-    public static query: number
-    public static iquery: number
-    public static status: number
-    public static notify: number
-    public static update: number
+  export enum ns_opcode {
+    query = 0,
+    iquery = 1,
+    status = 2,
+    notify = 4,
+    update = 5
   }
 
-  export abstract class ns_rcode {
-    public static noerror: number
-    public static formerr: number
-    public static servfail: number
-    public static nxdomain: number
-    public static notimpl: number
-    public static refused: number
-    public static yxdomain: number
-    public static yxrrset: number
-    public static nxrrset: number
-    public static notauth: number
-    public static notzone: number
-    public static max: number
-    public static badvers: number
-    public static badsig: number
-    public static badkey: number
-    public static badtime: number
+  export enum ns_rcode {
+    noerror = 0,
+    formerr = 1,
+    servfail = 2,
+    nxdomain = 3,
+    notimpl = 4,
+    refused = 5,
+    yxdomain = 6,
+    yxrrset = 7,
+    nxrrset = 8,
+    notauth = 9,
+    notzone = 10,
+    max = 11,
+    badvers = 16,
+    badsig = 16,
+    badkey = 17,
+    badtime = 18
   }
 
-  export abstract class ns_type {
-    public static invalid: number
-    public static a: number
-    public static ns: number
-    public static md: number
-    public static mf: number
-    public static cname: number
-    public static soa: number
-    public static mb: number
-    public static mg: number
-    public static mr: number
-    public static nul: number
-    public static wks: number
-    public static ptr: number
-    public static hinfo: number
-    public static minfo: number
-    public static mx: number
-    public static txt: number
-    public static rp: number
-    public static afsdb: number
-    public static x25: number
-    public static isdn: number
-    public static rt: number
-    public static nsap: number
-    public static ns_nsap_ptr: number
-    public static sig: number
-    public static key: number
-    public static px: number
-    public static gpos: number
-    public static aaaa: number
-    public static loc: number
-    public static nxt: number
-    public static eid: number
-    public static nimloc: number
-    public static srv: number
-    public static atma: number
-    public static naptr: number
-    public static kx: number
-    public static cert: number
-    public static a6: number
-    public static dname: number
-    public static sink: number
-    public static opt: number
-    public static apl: number
-    public static ds: number
-    public static sshfp: number
-    public static ipseckey: number
-    public static rrsig: number
-    public static nsec: number
-    public static dnskey: number
-    public static dhcid: number
-    public static nsec3: number
-    public static nsec3param: number
-    public static hip: number
-    public static spf: number
-    public static tkey: number
-    public static tsig: number
-    public static ixfr: number
-    public static axfr: number
-    public static mailb: number
-    public static maila: number
-    public static any: number
-    public static zxfr: number
-    public static dlv: number
-    public static max: number
+  enum ns_update_operation {
+    delete = 0,
+    add = 1,
+    max = 2
   }
 
-  export abstract class ns_class {
-    public static invalid: number
-    public static in: number
-    public static none: number
-    public static any: number
-    public staticmax: number
+  enum ns_type {
+    invalid = 0,
+    a = 1,
+    ns = 2,
+    md = 3,
+    mf = 4,
+    cname = 5,
+    soa = 6,
+    mb = 7,
+    mg = 8,
+    mr = 9,
+    null = 10,
+    wks = 11,
+    ptr = 12,
+    hinfo = 13,
+    minfo = 14,
+    mx = 15,
+    txt = 16,
+    rp = 17,
+    afsdb = 18,
+    x25 = 19,
+    isdn = 20,
+    rt = 21,
+    nsap = 22,
+    ns_nsap_ptr = 23,
+    sig = 24,
+    key = 25,
+    px = 26,
+    gpos = 27,
+    aaaa = 28,
+    loc = 29,
+    nxt = 30,
+    eid = 31,
+    nimloc = 32,
+    srv = 33,
+    atma = 34,
+    naptr = 35,
+    kx = 36,
+    cert = 37,
+    a6 = 38,
+    dname = 39,
+    sink = 40,
+    opt = 41,
+    apl = 42,
+    ds = 43,
+    sshfp = 44,
+    ipseckey = 45,
+    rrsig = 46,
+    nsec = 47,
+    dnskey = 48,
+    dhcid = 49,
+    nsec3 = 50,
+    nsec3param = 51,
+    hip = 55,
+    spf = 99,
+    tkey = 249,
+    tsig = 250,
+    ixfr = 251,
+    axfr = 252,
+    mailb = 253,
+    maila = 254,
+    any = 255,
+    zxfr = 256,
+    dlv = 32769,
+    max = 65536
+  }
+
+  export enum ns_class {
+    invalid = 0,
+    in = 1,
+    chaos = 3,
+    hs = 4,
+    none = 254,
+    any = 255
+  }
+
+  export enum ns_key_types {
+    rsa = 1,
+    dh = 2,
+    dsa = 3,
+    private = 4
+  }
+  export enum ns_cert_types {
+    pkix = 1,
+    spki = 2,
+    pgp = 3,
+    url = 253,
+    oid = 254
   }
 }
