@@ -1,6 +1,6 @@
 declare module '@olliv/bindns' {
   import { EventEmitter } from 'events'
-  import net from 'net'
+  import dgram from 'dgram'
 
   export class MessageHeader {
     public id: number
@@ -54,7 +54,7 @@ declare module '@olliv/bindns' {
       port: number
       size: number
     }
-    public socket: net.Socket
+    public socket: dgram.Socket
   }
 
   export class ServerResponse extends Message {
@@ -62,7 +62,7 @@ declare module '@olliv/bindns' {
   }
 
   export class Server extends EventEmitter {
-    public socket: import('dgram').Socket
+    public socket: dgram.Socket
     public constructor(type: 'udp4' | 'udp6', requestListener?: (req: ServerRequest, res: ServerResponse) => void)
     public bind(port: number, address?: string): void
     public close(): void

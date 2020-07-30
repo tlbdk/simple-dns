@@ -24,7 +24,7 @@
       "outFiles": [
         "${workspaceRoot}/build/dist/**/**.js"
       ],
-      "program": "${workspaceFolder}/src/index.ts",
+      "program": "${workspaceFolder}/src/server.ts",
       "sourceMaps": true,
       "args": [
         "init"
